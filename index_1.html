@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Вход — English</title>
+  <link rel="stylesheet" href="Ebatny.Css">
+  <script src="auth.js" defer></script>
+</head>
+<body>
+  <main class="login-card">
+    <p class="logo">English</p>
+    <h1>Вход</h1>
+    <p class="description">Войдите, чтобы продолжить обучение.</p>
+
+    <form id="login-form" class="login-form" method="post">
+      <div class="field">
+        <label for="login">Логин</label>
+        <input id="login" name="login" type="text"
+               autocomplete="username" required>
+      </div>
+
+      <div class="field">
+        <label for="password">Пароль</label>
+        <input id="password" name="password" type="password"
+               autocomplete="current-password" required>
+      </div>
+
+      <label class="password-option">
+        <input id="show-password" type="checkbox">
+        Показать пароль
+      </label>
+
+      <p id="login-error" class="error" role="alert" hidden></p>
+      <button type="submit">Войти</button>
+    </form>
+  </main>
+</body>
+</html>
