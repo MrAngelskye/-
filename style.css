@@ -1,0 +1,53 @@
+.roboto-condensed-body {
+  font-family: "Roboto Condensed", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+}
+
+.main-box {
+  max-width: 400;
+  margin: 50px auto;
+  padding: 25px;
+  background-color: #C1B3F080;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  width: 300px;
+}
+
+.unit-box {
+  max-width: 600;
+  margin: 50px auto;
+  padding: 25px;
+  background-color: #C1B3F080;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+}
+
+.back-image {
+background-image: url(back-image/pexels-codioful-7135010.jpg);
+background-repeat: no-repeat;
+background-position: center center;
+background-attachment: fixed;
+background-size: cover;
+}
+
+.center-text {
+  text-align: center;
+}
+
+.unit-button {
+  background-color: blueviolet;
+  color: black;
+  padding: 10px;
+  border-radius: 20px;
+  text-decoration: none;
+  display: block;
+  width: 100px;
+  text-align: center;
+}
+
+.unit-button-center {
+  position: relative;
+  left: 85px;
+}
