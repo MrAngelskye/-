@@ -3,37 +3,94 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Вход — English</title>
-  <link rel="stylesheet" href="Ebatny.Css">
+
+  <link rel="stylesheet" href="index_1.css">
   <script src="auth.js" defer></script>
 </head>
 <body>
-  <main class="login-card">
-    <p class="logo">English</p>
-    <h1>Вход</h1>
-    <p class="description">Войдите, чтобы продолжить обучение.</p>
+  <a class="skip-link" href="#content">К содержимому</a>
 
-    <form id="login-form" class="login-form" method="post">
-      <div class="field">
-        <label for="login">Логин</label>
-        <input id="login" name="login" type="text"
-               autocomplete="username" required>
+  <div class="page">
+    <header class="masthead">
+      <a class="brand" href="index_1.html"
+         lang="en" aria-label="English — вход">
+        English<span aria-hidden="true">*</span>
+      </a>
+
+      <p class="edition">Твой личный учебник</p>
+    </header>
+
+    <main class="spread" id="content">
+
+      <!-- Бордовая часть страницы -->
+      <div class="auth-poster">
+        <p class="eyebrow">Учиться. Пробовать. Говорить.</p>
+
+        <p class="display-type" lang="en">
+          Hello,<br>
+          <em>again.</em>
+        </p>
+
+        <p class="poster-caption">
+          Необязательно знать все слова.<br>
+          Достаточно начать с первого.
+        </p>
       </div>
 
-      <div class="field">
-        <label for="password">Пароль</label>
-        <input id="password" name="password" type="password"
-               autocomplete="current-password" required>
-      </div>
+      <!-- Форма входа -->
+      <section class="login-panel" aria-labelledby="login-title">
+        <p class="eyebrow">English / Вход</p>
 
-      <label class="password-option">
-        <input id="show-password" type="checkbox">
-        Показать пароль
-      </label>
+        <h1 id="login-title">Продолжим?</h1>
 
-      <p id="login-error" class="error" role="alert" hidden></p>
-      <button type="submit">Войти</button>
-    </form>
-  </main>
+        <p class="lead">Войди, чтобы открыть свой учебник.</p>
+
+        <form id="login-form" class="login-form" method="post">
+          <div class="field">
+            <label for="login">Логин</label>
+            <input
+              id="login"
+              name="login"
+              type="text"
+              autocomplete="username"
+              autocapitalize="none"
+              spellcheck="false"
+              required
+            >
+          </div>
+
+          <div class="field">
+            <label for="password">Пароль</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <label class="password-option">
+            <input id="show-password" type="checkbox">
+            Показать пароль
+          </label>
+
+          <p id="login-error" class="error" role="alert" hidden></p>
+
+          <button class="button" type="submit">
+            Войти в учебник
+            <span aria-hidden="true">↗</span>
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span lang="en">English / Personal edition</span>
+      <span>По одному разговору за раз.</span>
+    </footer>
+  </div>
 </body>
 </html>
