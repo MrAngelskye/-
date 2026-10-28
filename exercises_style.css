@@ -1,0 +1,20 @@
+.exercise-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.exercise-row label {
+    width: 200px;
+}
+
+.answer {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid gray;
+}
+
+.result {
+    color: green;
+}
