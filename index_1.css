@@ -95,8 +95,6 @@ input:focus-visible {
   letter-spacing: 1.5px;
 }
 
-/* Левая часть страницы */
-
 .auth-poster {
   min-width: 0;
   display: flex;
@@ -127,8 +125,6 @@ input:focus-visible {
   font-size: 14px;
   line-height: 1.7;
 }
-
-/* Форма авторизации */
 
 .login-panel {
   min-width: 0;
@@ -280,4 +276,17 @@ input:focus-visible {
     flex-direction: column;
     gap: 8px;
   }
-} 
+}
+
+:root {
+  --paper: #daf1de;
+  --ink: #051f20;
+  --wine: #163832;
+  --muted: #235347;
+}
+.display-type em { color: #8eb69b; }
+.poster-caption { border-color: #235347; }
+.button:hover { background: #0b2b26; }
+a:focus-visible,
+button:focus-visible,
+input:focus-visible { outline-color: #235347; }
