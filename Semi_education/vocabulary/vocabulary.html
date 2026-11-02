@@ -3,20 +3,192 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vocabulary — English</title>
+  <meta name="theme-color" content="#0b2b26">
+  <title>Мой словарь — English</title>
   <link rel="stylesheet" href="vocabulary.css">
+  <script src="vocabulary.js" defer></script>
 </head>
 <body>
+  <div class="intro" aria-hidden="true">
+    <span class="intro-word" lang="en">Vocabulary</span>
+  </div>
+
+  <a class="skip-link" href="#content">К словарю</a>
+
   <div class="page">
     <header class="masthead">
       <a class="brand" href="../../home.html" lang="en">English</a>
-    </header>
-    <main class="content">
       <a class="back-link" href="../../home.html">← На главную</a>
-      <p class="eyebrow">Словарь</p>
-      <h1 lang="en">Vocabulary</h1>
-      <p class="description">Здесь будут слова и выражения для повторения.</p>
+    </header>
+
+    <main id="content">
+      <section class="heading" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Самостоятельное обучение / словарь</p>
+          <h1 id="page-title" lang="en">Vocabulary<span>.</span></h1>
+        </div>
+        <p class="description">Слова, которые пригодятся тебе.<br>
+          Добавляй, возвращайся и проверяй, что запомнил.</p>
+      </section>
+
+      <p id="storage-warning" class="notice error-notice" role="alert" hidden></p>
+
+      <div class="workspace">
+        <section class="editor" aria-labelledby="editor-title">
+          <div class="section-heading">
+            <div>
+              <p class="section-label">Пополнить словарь</p>
+              <h2 id="editor-title">Новое слово</h2>
+            </div>
+            <span id="language-pair" class="language-pair">EN → RU</span>
+          </div>
+
+          <form id="word-form">
+            <div class="field">
+              <label for="direction">Направление перевода</label>
+              <select id="direction">
+                <option value="auto">Определять автоматически</option>
+                <option value="en">Английский → русский</option>
+                <option value="ru">Русский → английский</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="source-word">Слово или короткая фраза</label>
+              <input id="source-word" type="text" maxlength="160"
+                     placeholder="curious или любопытный"
+                     autocomplete="off" spellcheck="false" required>
+            </div>
+
+            <div class="field">
+              <label for="translation">Перевод</label>
+              <input id="translation" type="text" maxlength="160"
+                     placeholder="Появится автоматически"
+                     autocomplete="off" spellcheck="false"
+                     aria-describedby="translation-status" required>
+            </div>
+
+            <div class="translation-tools">
+              <p id="translation-status" class="status" role="status"
+                 aria-live="polite">Можно сразу ввести свой перевод.</p>
+              <button id="translate-again" class="text-button" type="button" disabled>
+                Перевести заново
+              </button>
+            </div>
+
+            <div class="form-actions">
+              <button id="save-word" class="primary-button" type="submit" disabled>
+                Добавить слово <span aria-hidden="true">+</span>
+              </button>
+              <button id="cancel-edit" class="text-button" type="button" hidden>
+                Отменить
+              </button>
+            </div>
+          </form>
+
+          <p class="editor-hint">Можно писать на обоих языках и исправлять любой перевод.</p>
+          <p class="service-note">
+            Автоперевод:
+            <a href="https://mymemory.translated.net/" target="_blank"
+               rel="noopener noreferrer">MyMemory</a>.
+            Введённое слово отправляется в этот сервис.
+          </p>
+        </section>
+
+        <section class="notebook" aria-labelledby="words-title">
+          <div class="section-heading notebook-heading">
+            <div>
+              <p class="section-label">Сохраняй своё</p>
+              <h2 id="words-title">Мой словарь</h2>
+            </div>
+            <span id="word-count" class="word-count">0 слов</span>
+          </div>
+
+          <div class="search-box">
+            <label class="visually-hidden" for="word-search">Найти в словаре</label>
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <path d="m16 16 4.5 4.5" />
+            </svg>
+            <input id="word-search" class="search-input" type="search"
+                   placeholder="Найти слово или перевод" autocomplete="off">
+            <button id="clear-search" class="clear-search" type="button"
+                    aria-label="Очистить поиск" hidden>×</button>
+          </div>
+
+          <div class="dictionary-toolbar">
+            <div class="sort-field">
+              <label for="word-sort">Порядок</label>
+              <select id="word-sort">
+                <option value="recent">Сначала новые</option>
+                <option value="alphabet">По алфавиту A–Z</option>
+              </select>
+            </div>
+            <button id="practice-toggle" class="practice-button" type="button"
+                    aria-pressed="false" aria-controls="word-list" disabled>
+              Скрыть переводы
+            </button>
+          </div>
+
+          <p id="practice-hint" class="practice-hint" hidden>
+            Вспомни перевод, затем открой ответ под словом.
+          </p>
+          <p id="search-results" class="search-results" role="status" aria-live="polite" hidden></p>
+
+          <div id="empty-state" class="empty-state">
+            <span class="empty-mark" aria-hidden="true" lang="en">Aa</span>
+            <h3>Начнём с одного слова?</h3>
+            <p>Введи его в форму. Перевод подберётся автоматически,
+              а твой вариант всегда можно сохранить вместо него.</p>
+            <button id="focus-editor" class="secondary-button" type="button">Добавить первое слово <span aria-hidden="true">↗</span></button>
+          </div>
+
+          <div id="no-results" class="no-results" hidden>
+            <h3>Такого слова пока нет.</h3>
+            <p>Попробуй другую часть слова или его перевод.</p>
+            <button id="reset-search" class="text-button" type="button">Сбросить поиск</button>
+          </div>
+          <ul id="word-list" class="word-list" aria-label="Словарь"></ul>
+
+          <div id="list-message" class="list-message" hidden>
+            <p id="list-status" role="status" aria-live="polite"></p>
+            <button id="undo-delete" class="text-button" type="button" hidden>
+              Вернуть слово
+            </button>
+          </div>
+
+          <p class="storage-note">
+            <span class="storage-dot" aria-hidden="true"></span>
+            Словарь сохраняется в этом браузере.
+          </p>
+        </section>
+      </div>
+
+      <noscript>
+        <p class="notice">Для работы словаря включи JavaScript в браузере.</p>
+      </noscript>
     </main>
+
+    <footer class="footer">
+      <span lang="en">English / Vocabulary</span>
+      <span>Твой словарь — твои формулировки.</span>
+    </footer>
   </div>
+
+  <template id="word-template">
+    <li class="word-row">
+      <span class="word-number" aria-hidden="true"></span>
+      <div class="word-pair">
+        <strong class="english-word" lang="en"></strong>
+        <span class="russian-word" lang="ru"></span>
+        <button class="reveal-button" type="button" data-action="reveal"
+                aria-expanded="false" hidden>Показать перевод</button>
+      </div>
+      <div class="word-actions">
+        <button class="text-button" type="button" data-action="edit">Изменить</button>
+        <button class="text-button delete-button" type="button" data-action="delete">Удалить</button>
+      </div>
+    </li>
+  </template>
 </body>
 </html>

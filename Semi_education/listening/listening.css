@@ -1,4 +1,5 @@
 :root {
+  --night: #051f20;
   --background: #0b2b26;
   --surface: #163832;
   --line: #235347;
@@ -81,4 +82,71 @@ h1 {
   color: var(--sage);
   font-size: 16px;
   line-height: 1.8;
+}
+
+/* Раскрытие обложки при открытии раздела. */
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  animation: finish-intro 1.2s steps(1, end) forwards;
+}
+
+.intro::before,
+.intro::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50%;
+  content: "";
+  background: var(--night);
+}
+
+.intro::before {
+  left: 0;
+  animation: open-left 850ms 250ms cubic-bezier(.76, 0, .24, 1) both;
+}
+
+.intro::after {
+  right: 0;
+  animation: open-right 850ms 250ms cubic-bezier(.76, 0, .24, 1) both;
+}
+
+.intro-word {
+  z-index: 1;
+  font: italic clamp(54px, 9vw, 120px) Georgia, "Times New Roman", serif;
+  animation: fade-title 350ms 100ms both;
+}
+
+.content {
+  animation: appear 800ms 400ms both;
+}
+
+@keyframes open-left {
+  to { transform: translateX(-100%); }
+}
+
+@keyframes open-right {
+  to { transform: translateX(100%); }
+}
+
+@keyframes fade-title {
+  to { opacity: 0; transform: translateY(-12px); }
+}
+
+@keyframes finish-intro {
+  to { visibility: hidden; }
+}
+
+@keyframes appear {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+  .content { animation: none; }
 }
