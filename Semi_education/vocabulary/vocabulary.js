@@ -69,7 +69,6 @@
     undoButton.hidden = !canUndo;
   }
 
-  // Сохранённый словарь остаётся только в браузере.
   function validWord(word) {
     return word && typeof word.id === "string"
       && word.id.length > 0 && word.id.length <= 100
@@ -197,7 +196,6 @@
         .filter(value => matchesLanguage(value, targetLanguage))
       : [];
 
-    // Иногда память переводов возвращает исходное слово вместо перевода.
     if (!/\s/.test(text)) {
       const singleWord = alternatives.find(value => !/\s/.test(value));
       if (singleWord) return singleWord;
@@ -316,7 +314,6 @@
       || normalize(word.russian).includes(query)
     );
 
-    // Сортируем копию списка: порядок сохранённых записей не меняется.
     if (sortSelect.value === "alphabet") {
       visible.sort((first, second) => alphabet.compare(first.english, second.english));
     }
@@ -483,7 +480,7 @@
     if (editingId === id) resetEditor();
     renderWords();
     showListMessage("Слово удалено.", true);
-    // После удаления фокус остаётся в словаре, а не теряется вместе со строкой.
+ 
     const nextRow = list.children[Math.min(index, list.children.length - 1)];
     if (nextRow) nextRow.querySelector('[data-action="edit"]').focus();
     else searchInput.focus();

@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#0b2b26">
-  <title>Мой словарь — English</title>
+  <title>Мой словарь - English</title>
   <link rel="stylesheet" href="vocabulary.css">
   <script src="vocabulary.js" defer></script>
 </head>
@@ -27,8 +27,9 @@
           <p class="eyebrow">Самостоятельное обучение / словарь</p>
           <h1 id="page-title" lang="en">Vocabulary<span>.</span></h1>
         </div>
-        <p class="description">Слова, которые пригодятся тебе.<br>
-          Добавляй, возвращайся и проверяй, что запомнил.</p>
+        <p class="description">“The limits of my language<br>
+         mean the limits of my world.”.</p>
+
       </section>
 
       <p id="storage-warning" class="notice error-notice" role="alert" hidden></p>
@@ -91,7 +92,6 @@
             Автоперевод:
             <a href="https://mymemory.translated.net/" target="_blank"
                rel="noopener noreferrer">MyMemory</a>.
-            Введённое слово отправляется в этот сервис.
           </p>
         </section>
 
@@ -121,7 +121,7 @@
               <label for="word-sort">Порядок</label>
               <select id="word-sort">
                 <option value="recent">Сначала новые</option>
-                <option value="alphabet">По алфавиту A–Z</option>
+                <option value="alphabet">По алфавиту A-Z</option>
               </select>
             </div>
             <button id="practice-toggle" class="practice-button" type="button"
@@ -137,9 +137,7 @@
 
           <div id="empty-state" class="empty-state">
             <span class="empty-mark" aria-hidden="true" lang="en">Aa</span>
-            <h3>Начнём с одного слова?</h3>
-            <p>Введи его в форму. Перевод подберётся автоматически,
-              а твой вариант всегда можно сохранить вместо него.</p>
+            <h3>Начнём с первого слова?</h3>
             <button id="focus-editor" class="secondary-button" type="button">Добавить первое слово <span aria-hidden="true">↗</span></button>
           </div>
 
@@ -157,21 +155,13 @@
             </button>
           </div>
 
-          <p class="storage-note">
-            <span class="storage-dot" aria-hidden="true"></span>
-            Словарь сохраняется в этом браузере.
-          </p>
         </section>
       </div>
 
-      <noscript>
-        <p class="notice">Для работы словаря включи JavaScript в браузере.</p>
-      </noscript>
     </main>
 
     <footer class="footer">
       <span lang="en">English / Vocabulary</span>
-      <span>Твой словарь — твои формулировки.</span>
     </footer>
   </div>
 
