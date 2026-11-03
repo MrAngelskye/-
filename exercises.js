@@ -1,17 +1,45 @@
-const exercises = document.querySelectorAll(".exercise-row");
+const exerciseSections = document.querySelectorAll("[data-exercise]");
 
-exercises.forEach(function(exercise) {
-    const input = exercise.querySelector(".answer");
-    const result = exercise.querySelector(".result");
+function normalizeAnswer(value) {
+    return value
+        .trim()
+        .toLowerCase()
+        .replace(/[’‘]/g, "'")
+        .replace(/[‐‑–—]/g, "-")
+        .replace(/\s*-\s*/g, "-")
+        .replace(/[.,!?;:]/g, "")
+        .replace(/\s+/g, " ");
+}
 
-    input.addEventListener("input", function() {
-        let userAnswer = input.value.trim().toLowerCase();
-        let correctAnswer = input.dataset.answer;
+exerciseSections.forEach(function(section) {
+    const inputs = section.querySelectorAll(".answer");
+    const score = section.querySelector("[data-score]");
 
-        if (userAnswer === correctAnswer){
-            result.textContent = "✓ Верно!";
-        } else {
-            result.textContent = "";
-        }
+    function updateScore() {
+        const correctCount = Array.from(inputs).filter(function(input) {
+            return input.classList.contains("is-correct");
+        }).length;
+
+        score.textContent = `${correctCount} из ${inputs.length}`;
+    }
+
+    inputs.forEach(function(input) {
+        const result = input.parentElement.querySelector(".result");
+        const acceptedAnswers = input.dataset.answers
+            .split("|")
+            .map(normalizeAnswer);
+
+        input.addEventListener("input", function() {
+            const answer = normalizeAnswer(input.value);
+            const isCorrect = answer !== "" && acceptedAnswers.includes(answer);
+
+            input.classList.toggle("is-correct", isCorrect);
+            result.textContent = isCorrect ? "✓" : "";
+            result.setAttribute("aria-label", isCorrect ? "Correct" : "");
+
+            updateScore();
+        });
     });
+
+    updateScore();
 });
