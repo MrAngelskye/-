@@ -536,6 +536,16 @@
     if (button.dataset.action === "delete") deleteWord(id);
   });
 
+  createVocabularyCards({
+    getWords: () => words,
+    saveWords: nextWords => {
+      if (!writeWords(nextWords)) return false;
+      renderWords();
+      return true;
+    },
+    focusEditor: () => sourceInput.focus()
+  });
+
   renderWords();
   updateDirection();
   updateButtons();

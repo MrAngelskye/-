@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0b2b26">
   <title>Мой словарь - English</title>
   <link rel="stylesheet" href="vocabulary.css">
+  <script src="vocabulary-cards.js" defer></script>
   <script src="vocabulary.js" defer></script>
 </head>
 <body>
@@ -34,7 +35,14 @@
 
       <p id="storage-warning" class="notice error-notice" role="alert" hidden></p>
 
-      <div class="workspace">
+      <div class="vocabulary-tabs" role="tablist" aria-label="Режим словаря">
+        <button id="dictionary-tab" class="view-tab" type="button" role="tab"
+                aria-selected="true" aria-controls="dictionary-panel">Словарь</button>
+        <button id="cards-tab" class="view-tab" type="button" role="tab"
+                aria-selected="false" aria-controls="cards-panel" tabindex="-1">Карточки</button>
+      </div>
+
+      <div id="dictionary-panel" class="workspace" role="tabpanel" aria-labelledby="dictionary-tab">
         <section class="editor" aria-labelledby="editor-title">
           <div class="section-heading">
             <div>
@@ -157,6 +165,81 @@
 
         </section>
       </div>
+
+      <section id="cards-panel" class="cards-panel" role="tabpanel"
+               aria-labelledby="cards-tab" hidden>
+        <div class="cards-heading">
+          <div>
+            <p class="section-label">Практика по своему словарю</p>
+            <h2>Вспомни перевод</h2>
+          </div>
+          <p id="card-position" class="card-position"></p>
+        </div>
+
+        <div class="review-score" aria-label="Результаты текущей подборки">
+          <span>Вспомнил <strong id="review-correct">0</strong></span>
+          <span>Повторить <strong id="review-wrong">0</strong></span>
+          <span>Удалено <strong id="review-deleted">0</strong></span>
+        </div>
+
+        <div id="review-active">
+          <p id="card-instructions" class="card-instructions">
+            Нажми на карточку, чтобы открыть перевод. Затем перетащи её в нужную сторону.
+          </p>
+          <div id="card-stage" class="card-stage">
+            <span class="card-stack" aria-hidden="true"></span>
+            <button id="review-card" class="review-card" type="button" aria-pressed="false"
+                    aria-describedby="card-instructions">
+              <span class="card-turn">
+                <span id="card-front" class="card-face card-front">
+                  <span class="card-language">English</span>
+                  <span id="card-word" class="card-text" lang="en"></span>
+                  <span class="card-prompt">Нажми, чтобы увидеть перевод <span aria-hidden="true">↗</span></span>
+                </span>
+                <span id="card-back" class="card-face card-back" aria-hidden="true">
+                  <span class="card-language">Перевод</span>
+                  <span id="card-translation" class="card-text" lang="ru"></span>
+                  <span id="card-original" class="card-original" lang="en"></span>
+                </span>
+              </span>
+              <span id="card-drag-label" class="card-drag-label" aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="card-actions" aria-label="Ответ на карточку">
+            <button id="card-wrong" class="card-action" type="button" disabled>
+              <span aria-hidden="true">←</span> Не вспомнил
+            </button>
+            <button id="card-correct" class="card-action card-action-correct" type="button" disabled>
+              Вспомнил <span aria-hidden="true">→</span>
+            </button>
+            <button id="card-delete" class="card-action card-action-delete" type="button">
+              <span aria-hidden="true">↓</span> Удалить из словаря
+            </button>
+          </div>
+          <p class="card-keyboard-hint">Можно использовать кнопки или стрелки на клавиатуре, когда карточка в фокусе.</p>
+        </div>
+
+        <div id="review-empty" class="review-result" hidden>
+          <h3 id="review-empty-title" tabindex="-1">Пока нет карточек.</h3>
+          <p>Добавь слова в словарь — они появятся здесь.</p>
+          <button id="cards-add-word" class="secondary-button" type="button">Добавить слово</button>
+        </div>
+
+        <div id="review-complete" class="review-result" hidden>
+          <h3 id="review-complete-title" tabindex="-1">Подборка пройдена.</h3>
+          <p id="review-summary"></p>
+          <div class="review-restart-actions">
+            <button id="review-retry" class="secondary-button" type="button">Повторить ошибки</button>
+            <button id="review-restart" class="secondary-button" type="button">Все слова ещё раз</button>
+          </div>
+        </div>
+
+        <div class="card-feedback">
+          <p id="card-status" role="status" aria-live="polite"></p>
+          <button id="card-undo" class="text-button" type="button" hidden>Вернуть слово</button>
+        </div>
+      </section>
 
     </main>
 

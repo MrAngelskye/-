@@ -670,6 +670,282 @@ h3 {
   font-size: 11px;
 }
 
+.vocabulary-tabs {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 32px;
+  border-bottom: 1px solid var(--line);
+}
+
+.view-tab {
+  min-height: 48px;
+  padding: 10px 2px 16px;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--sage);
+  background: transparent;
+  font-size: 14px;
+}
+
+.view-tab[aria-selected="true"] {
+  border-bottom-color: var(--mint);
+  color: var(--mint);
+}
+
+.cards-panel {
+  max-width: 900px;
+  margin-inline: auto;
+  padding-bottom: 40px;
+}
+
+.cards-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.card-position {
+  color: var(--sage);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+}
+
+.review-score {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 28px;
+  margin-top: 24px;
+  padding-block: 16px;
+  border-block: 1px solid var(--line);
+  color: var(--sage);
+  font-size: 12px;
+}
+
+.review-score strong {
+  padding-left: 8px;
+  color: var(--mint);
+  font-weight: 600;
+}
+
+.card-instructions, .card-keyboard-hint {
+  margin: 24px 0 0;
+  color: var(--sage);
+  font-size: 12px;
+  line-height: 1.7;
+  text-align: center;
+}
+
+.card-stage {
+  --edge-fade: 24px;
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 410px;
+  padding: 32px 24px 48px;
+  overflow: hidden;
+  /* Края мягко растворяются, вместо резкого обрезания карточки. */
+  mask-image:
+    linear-gradient(to right, transparent, #000 var(--edge-fade), #000 calc(100% - var(--edge-fade)), transparent),
+    linear-gradient(to bottom, transparent, #000 18px, #000 calc(100% - 18px), transparent);
+  mask-composite: intersect;
+}
+
+.card-stack {
+  position: absolute;
+  width: min(calc(100% - 64px), 520px);
+  height: calc(100% - 100px);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  transform: translateY(12px) rotate(-2deg);
+  transition: transform 520ms cubic-bezier(.22, .68, .32, 1), border-color 240ms ease;
+}
+
+.card-stack::before {
+  position: absolute;
+  inset: 8px -4px -8px;
+  z-index: -1;
+  border: 1px solid var(--line);
+  border-radius: inherit;
+  background: var(--night);
+  content: "";
+  transform: rotate(3deg);
+}
+
+.card-stage[data-exiting="true"] .card-stack {
+  transform: translateY(4px) rotate(0deg) scale(1.015);
+}
+
+.card-stage[data-intent] .card-stack {
+  border-color: var(--sage);
+}
+
+.review-card {
+  position: relative;
+  display: grid;
+  width: min(100%, 540px);
+  min-height: 330px;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  perspective: 1200px;
+  z-index: 1;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  /* Перемещением и затуханием управляет одна анимация в vocabulary-cards.js. */
+  transition: none;
+}
+
+.review-card[data-dragging="true"] {
+  cursor: grabbing;
+  transition: none;
+}
+
+.review-card[data-dragging="true"], .review-card[data-moving="true"] {
+  will-change: transform, opacity;
+}
+
+.card-turn {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  min-height: inherit;
+  transform-style: preserve-3d;
+  transition: none;
+}
+
+.review-card[data-ready="true"] .card-turn {
+  transition: transform 420ms cubic-bezier(.2, .7, .2, 1);
+}
+
+.review-card[aria-pressed="true"] .card-turn {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: relative;
+  grid-area: 1 / 1;
+  min-height: inherit;
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+  padding: 28px 32px;
+  border: 1px solid var(--mint);
+  border-radius: 5px;
+  color: var(--night);
+  background: var(--mint);
+  box-shadow: 0 16px 36px rgb(5 31 32 / 20%);
+  transition: box-shadow 240ms ease;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.review-card[data-dragging="true"] .card-face {
+  box-shadow: 0 24px 52px rgb(5 31 32 / 38%);
+}
+
+.card-back {
+  border-color: var(--sage);
+  color: var(--mint);
+  background: var(--surface);
+  transform: rotateY(180deg);
+}
+
+.card-language {
+  font-size: 10px;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+}
+
+.card-text {
+  min-width: 0;
+  font: normal clamp(32px, 5vw, 60px)/1.15 var(--serif);
+  overflow-wrap: anywhere;
+}
+
+.review-card[data-long="true"] .card-text {
+  font-size: clamp(18px, 2.4vw, 28px);
+  line-height: 1.3;
+}
+
+.card-prompt, .card-original {
+  font-size: 12px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.card-prompt span { padding-left: 12px; }
+.card-original { color: var(--sage); }
+
+.card-drag-label {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  opacity: 0;
+  visibility: hidden;
+  padding: 9px 14px;
+  border-radius: 2px;
+  color: var(--night);
+  background: var(--sage);
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, -5px);
+  transition: opacity 180ms ease, transform 180ms ease, visibility 180ms;
+}
+
+.review-card[data-intent] .card-drag-label {
+  opacity: 1;
+  visibility: visible;
+  transform: translate(-50%, 0);
+}
+.review-card[data-intent="wrong"] .card-drag-label,
+.review-card[data-intent="delete"] .card-drag-label { background: var(--error); }
+
+.review-card[data-exit] { pointer-events: none; }
+
+.card-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  max-width: 540px;
+  margin-inline: auto;
+}
+
+.card-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  color: var(--mint);
+  background: transparent;
+  font-size: 13px;
+}
+
+.card-action:hover:not(:disabled) { border-color: var(--sage); background: var(--surface); }
+.card-action-correct { border-color: var(--sage); }
+.card-action-delete { grid-column: 1 / -1; border-color: transparent; color: var(--sage); font-size: 12px; }
+.card-keyboard-hint { margin-top: 12px; font-size: 11px; }
+
+.review-result {
+  padding: 50px 16px;
+  text-align: center;
+}
+
+.review-result p { color: var(--sage); font-size: 14px; line-height: 1.7; }
+.review-restart-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
+.card-feedback { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 18px; min-height: 48px; margin-top: 16px; }
+.card-feedback p { margin: 0; color: var(--sage); font-size: 12px; line-height: 1.6; }
+
 .intro {
   position: fixed;
   inset: 0;
@@ -813,6 +1089,16 @@ h3 {
 }
 
 @media (max-width: 440px) {
+  .cards-heading { align-items: flex-start; }
+  .cards-heading h2 { font-size: 27px; }
+  .card-position { max-width: 9ch; margin-top: 22px; text-align: right; }
+  .review-score { gap: 12px; font-size: 11px; }
+  .review-score strong { padding-left: 4px; }
+  .card-stage { --edge-fade: 8px; min-height: 372px; padding: 24px 12px 28px; }
+  .review-card { min-height: 320px; }
+  .card-face { padding: 24px 18px; gap: 14px; }
+  .card-stack { width: calc(100% - 40px); height: calc(100% - 72px); }
+  .card-action { gap: 8px; font-size: 12px; }
   .page {
     width: calc(100% - 32px);
   }
@@ -865,6 +1151,8 @@ h3 {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .review-card, .review-card .card-turn, .card-stack,
+  .card-face, .card-drag-label { transition: none; }
   .intro {
     display: none;
   }
