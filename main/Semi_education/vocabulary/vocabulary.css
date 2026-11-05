@@ -29,7 +29,7 @@ a {
   text-decoration: none;
 }
 
-button, input, select {
+button, input, select, textarea {
   font: inherit;
 }
 
@@ -42,7 +42,7 @@ button:disabled {
   opacity: 0.45;
 }
 
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 2px solid var(--sage);
   outline-offset: 4px;
 }
@@ -216,7 +216,7 @@ h2 {
   font-size: 12px;
 }
 
-input, select {
+input, select, textarea {
   width: 100%;
   min-width: 0;
   min-height: 48px;
@@ -228,19 +228,25 @@ input, select {
   font-size: 15px;
 }
 
-.editor input, .editor select {
+.editor input, .editor select, .editor textarea {
   border-color: var(--sage);
   color: var(--night);
   background: transparent;
 }
 
-.editor input {
+.editor input, .editor textarea {
   padding-inline: 0;
   border-width: 0 0 1px;
   border-radius: 0;
 }
 
-.editor input::placeholder {
+.editor textarea {
+  display: block;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.editor input::placeholder, .editor textarea::placeholder {
   color: var(--line);
   opacity: 0.85;
 }
@@ -260,7 +266,7 @@ input, select {
   outline-color: var(--line);
 }
 
-.editor input:focus {
+.editor input:focus, .editor textarea:focus {
   border-bottom-color: var(--night);
 }
 

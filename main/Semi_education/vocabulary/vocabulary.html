@@ -6,6 +6,7 @@
   <meta name="theme-color" content="#0b2b26">
   <title>Мой словарь - English</title>
   <link rel="stylesheet" href="vocabulary.css">
+  <script src="../translation.js" defer></script>
   <script src="vocabulary-cards.js" defer></script>
   <script src="vocabulary.js" defer></script>
 </head>
@@ -64,17 +65,17 @@
 
             <div class="field">
               <label for="source-word">Слово или короткая фраза</label>
-              <input id="source-word" type="text" maxlength="160"
+              <textarea id="source-word" rows="2" maxlength="4000"
                      placeholder="curious или любопытный"
-                     autocomplete="off" spellcheck="false" required>
+                     autocomplete="off" spellcheck="false" required></textarea>
             </div>
 
             <div class="field">
               <label for="translation">Перевод</label>
-              <input id="translation" type="text" maxlength="160"
+              <textarea id="translation" rows="2" maxlength="4000"
                      placeholder="Появится автоматически"
                      autocomplete="off" spellcheck="false"
-                     aria-describedby="translation-status" required>
+                     aria-describedby="translation-status" required></textarea>
             </div>
 
             <div class="translation-tools">

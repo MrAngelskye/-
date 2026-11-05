@@ -2,7 +2,7 @@
   "use strict";
 
   const STORAGE_KEY = "english.vocabulary.v1";
-  const MAX_LENGTH = 160;
+  const {cleanText, maxEntryLength: MAX_LENGTH, translate} = englishTranslation;
   const TRANSLATION_DELAY = 650;
 
   const form = document.getElementById("word-form");
@@ -44,10 +44,6 @@
   let hideTranslations = false;
   const revealedWords = new Set();
   const translationCache = new Map();
-
-  function cleanText(value) {
-    return value.replace(/\s+/g, " ").trim();
-  }
 
   function normalize(value) {
     return cleanText(value).normalize("NFKC").toLocaleLowerCase();
@@ -170,40 +166,6 @@
     translationTimer = setTimeout(translateWord, TRANSLATION_DELAY);
   }
 
-  function decodeTranslation(value) {
-    const decoder = document.createElement("textarea");
-    decoder.innerHTML = value.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-    return cleanText(decoder.value);
-  }
-
-  function matchesLanguage(text, targetLanguage) {
-    return targetLanguage === "en"
-      ? /[a-z]/i.test(text) && !/[а-яё]/i.test(text)
-      : /[а-яё]/i.test(text);
-  }
-
-  function chooseTranslation(data, text, targetLanguage) {
-    const primary = typeof data.responseData?.translatedText === "string"
-      ? decodeTranslation(data.responseData.translatedText) : "";
-
-    if (matchesLanguage(primary, targetLanguage)) return primary;
-
-    const alternatives = Array.isArray(data.matches)
-      ? data.matches
-        .filter(match => typeof match.translation === "string"
-          && Number(match.match) >= 0.7)
-        .map(match => decodeTranslation(match.translation))
-        .filter(value => matchesLanguage(value, targetLanguage))
-      : [];
-
-    if (!/\s/.test(text)) {
-      const singleWord = alternatives.find(value => !/\s/.test(value));
-      if (singleWord) return singleWord;
-    }
-
-    return alternatives[0] || "";
-  }
-
   function knownTranslation(text, language) {
     const key = normalize(text);
     const saved = words.find(word =>
@@ -227,12 +189,6 @@
       return;
     }
 
-    if (new TextEncoder().encode(text).length > 500) {
-      showTranslationStatus("Сократи фразу или введи перевод вручную.", "error");
-      updateButtons();
-      return;
-    }
-
     const version = translationVersion;
     const controller = new AbortController();
     translationController = controller;
@@ -240,54 +196,28 @@
     updateButtons();
     showTranslationStatus("Ищу перевод…");
 
-    const timeout = setTimeout(() => controller.abort(), 10000);
+    const timeout = setTimeout(() => controller.abort(), 20000);
 
     try {
       const targetLanguage = language === "en" ? "ru" : "en";
-      const url = new URL("https://api.mymemory.translated.net/get");
-      url.searchParams.set("q", text);
-      url.searchParams.set("langpair", language + "|" + targetLanguage);
-
-      const response = await fetch(url, {
-        signal: controller.signal,
-        credentials: "omit",
-        referrerPolicy: "no-referrer"
-      });
-      if (!response.ok) throw new Error("Translation service unavailable");
-
-      const data = await response.json();
+      const translated = await translate(text, language, targetLanguage, controller.signal);
       if (version !== translationVersion) return;
-
-      if (data.quotaFinished || Number(data.responseStatus) === 429) {
-        showTranslationStatus(
-          "Дневной лимит автоперевода закончился. Можно ввести перевод вручную.",
-          "error"
-        );
-        return;
-      }
-
-      if (Number(data.responseStatus) !== 200) {
-        throw new Error("Translation service error");
-      }
-
-      const translated = chooseTranslation(data, text, targetLanguage);
-      if (!translated) throw new Error("No translation");
 
       translationInput.value = translated;
       if (translated.length > MAX_LENGTH) {
         showTranslationStatus(
-          "Перевод слишком длинный. Сократи его до 160 символов.", "error"
+          "Перевод слишком длинный. Сократи его до " + MAX_LENGTH + " символов.", "error"
         );
       } else {
         translationCache.set(language + ":" + normalize(text), translated);
         showTranslationStatus("Готово. При желании исправь перевод.");
       }
-    } catch {
+    } catch (error) {
       if (version !== translationVersion) return;
-      showTranslationStatus(
-        "Автоперевод сейчас недоступен. Введи свой вариант или попробуй ещё раз.",
-        "error"
-      );
+      const message = error.message === "quota"
+        ? "Дневной лимит автоперевода закончился. Можно ввести перевод вручную."
+        : "Автоперевод сейчас недоступен. Введи свой вариант или попробуй ещё раз.";
+      showTranslationStatus(message, "error");
     } finally {
       clearTimeout(timeout);
       if (version === translationVersion) {
@@ -410,7 +340,7 @@
 
     if (!language || !source || !translation
         || source.length > MAX_LENGTH || translation.length > MAX_LENGTH) {
-      showTranslationStatus("Проверь слово и перевод: не больше 160 символов.", "error");
+      showTranslationStatus("Проверь длину слова или отрывка и его перевода.", "error");
       return;
     }
 
@@ -536,6 +466,21 @@
     if (button.dataset.action === "delete") deleteWord(id);
   });
 
+  function prefillFromReading() {
+    const params = new URLSearchParams(location.hash.slice(1));
+    const english = cleanText(params.get("reading-en") || "");
+    const russian = cleanText(params.get("reading-ru") || "");
+    if (!english || !russian || english.length > MAX_LENGTH || russian.length > MAX_LENGTH
+        || !/[a-z]/i.test(english) || !/[а-яё]/i.test(russian)) return;
+
+    direction.value = "en";
+    sourceInput.value = english;
+    translationInput.value = russian;
+    showTranslationStatus("Из Reading. Проверь перевод и добавь запись в словарь.");
+    sourceInput.focus();
+    history.replaceState(history.state, "", location.href.split("#")[0]);
+  }
+
   createVocabularyCards({
     getWords: () => words,
     saveWords: nextWords => {
@@ -547,6 +492,7 @@
   });
 
   renderWords();
+  prefillFromReading();
   updateDirection();
   updateButtons();
 })();

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b2b26">
+  <title>Reading - English</title>
+  <link rel="stylesheet" href="reading.css">
+  <script src="../translation.js" defer></script>
+  <script src="reading-lessons.js" defer></script>
+  <script src="reading.js" defer></script>
+</head>
+<body>
+  <div class="intro" aria-hidden="true">
+    <span class="intro-word" lang="en">Reading</span>
+  </div>
+
+  <div class="page">
+    <header class="masthead">
+      <a class="brand" href="../../home.html" lang="en">English</a>
+      <a class="back-link" href="../../home.html">← На главную</a>
+    </header>
+    <main class="content">
+      <section class="reading-heading" aria-labelledby="reading-title">
+        <div>
+          <p class="eyebrow">Самостоятельная практика / Чтение</p>
+          <h1 id="reading-title" lang="en">Reading<span>.</span></h1>
+          <p class="description">Короткие истории, вопросы к тексту и новые слова для твоего словаря.</p>
+        </div>
+        <figure class="reading-quote">
+          <blockquote lang="en" cite="https://www.gutenberg.org/cache/epub/575/pg575-images.html">
+            <p>Some books are to be tasted, others to be swallowed, and some few to be chewed and digested.</p>
+          </blockquote>
+          <figcaption>Фрэнсис Бэкон · <cite lang="en"><a href="https://www.gutenberg.org/cache/epub/575/pg575-images.html">Of Studies</a></cite></figcaption>
+        </figure>
+      </section>
+
+      <section id="catalog" aria-labelledby="catalog-title">
+        <div class="catalog-heading">
+          <h2 id="catalog-title" tabindex="-1">Тексты для чтения</h2>
+          <a id="resume-reading" class="outline-link" hidden>Продолжить чтение</a>
+        </div>
+        <ul id="lesson-list" class="lesson-list"></ul>
+      </section>
+
+      <section id="reading-lesson" aria-labelledby="passage-title" hidden>
+        <a class="back-link" href="#catalog">← К списку текстов</a>
+        <div class="lesson-layout">
+          <article class="passage" lang="en" aria-labelledby="passage-title">
+            <p id="passage-meta" class="passage-meta" lang="ru"></p>
+            <h2 id="passage-title" tabindex="-1"></h2>
+            <p class="word-instruction" lang="ru">Нажми на слово или выдели отрывок, чтобы увидеть перевод. Для автоперевода выбранный текст отправляется в MyMemory.</p>
+            <div id="passage-text"></div>
+            <aside id="word-note" class="word-note" lang="ru" aria-label="Подсказка к слову" hidden>
+              <div class="word-note-heading">
+                <strong id="note-word" lang="en"></strong>
+                <button id="close-word-note" class="note-close" type="button" aria-label="Закрыть перевод">×</button>
+              </div>
+              <p id="note-translation" role="status"></p>
+              <div class="word-note-actions">
+                <a id="save-reading-word" class="outline-link" hidden>Добавить в Vocabulary ↗</a>
+                <button id="retry-translation" class="outline-link" type="button" hidden>Повторить перевод</button>
+              </div>
+            </aside>
+          </article>
+
+          <section class="reading-quiz" aria-labelledby="quiz-title">
+            <p class="eyebrow">После чтения</p>
+            <h2 id="quiz-title">Проверь себя</h2>
+            <p class="quiz-instruction">Выбери по одному ответу на каждый вопрос.</p>
+            <form id="reading-quiz">
+              <div id="reading-questions"></div>
+              <p id="quiz-message" class="quiz-message" role="status"></p>
+              <button id="check-reading" class="reading-button" type="submit">Проверить ответы</button>
+              <button id="retry-reading" class="outline-link" type="button" hidden>Попробовать снова</button>
+            </form>
+          </section>
+        </div>
+      </section>
+      <p id="reading-storage-note" class="quiz-instruction" role="status" hidden>Прогресс в этом браузере сейчас не сохраняется.</p>
+      <noscript><p>Для работы заданий включи JavaScript.</p></noscript>
+    </main>
+  </div>
+</body>
+</html>
