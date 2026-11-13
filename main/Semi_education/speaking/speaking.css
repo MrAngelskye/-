@@ -1,21 +1,31 @@
+@import url("../../assets/fonts/fonts.css");
+
 :root {
   --night: #051f20;
   --background: #0b2b26;
+  --panel: #102f2a;
   --surface: #163832;
   --line: #235347;
   --sage: #8eb69b;
   --mint: #daf1de;
+  --accent: #e4c78e;
+  --paper: #e7f0dd;
 }
 
 * {
   box-sizing: border-box;
 }
 
+[hidden] {
+  display: none !important;
+}
+
 body {
   margin: 0;
   color: var(--mint);
   background: var(--background);
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: var(--sans);
+  line-height: 1.5;
 }
 
 a {
@@ -23,7 +33,13 @@ a {
   text-decoration: none;
 }
 
-a:focus-visible {
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+#feedback-title:focus-visible {
   outline: 2px solid var(--sage);
   outline-offset: 5px;
 }
@@ -36,58 +52,361 @@ a:focus-visible {
 .masthead {
   display: flex;
   align-items: center;
-  min-height: 96px;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 78px;
   border-bottom: 1px solid var(--line);
 }
 
 .brand {
-  font: bold 32px Georgia, "Times New Roman", serif;
-  letter-spacing: -1.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font: 700 clamp(1.375rem, 4vw, 2rem)/1.1 var(--serif);
+  letter-spacing: -0.045em;
+}
+
+.brand img {
+  width: 1em;
+  height: 1em;
+  flex: none;
 }
 
 .content {
-  padding-block: clamp(48px, 10vw, 120px);
+  padding-bottom: 72px;
 }
 
 .back-link {
   display: inline-block;
   padding-block: 12px;
   color: var(--sage);
-  font-size: 14px;
+  font-size: 0.9375rem;
 }
 
 .back-link:hover {
   color: var(--mint);
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .eyebrow {
-  margin: 36px 0 16px;
+  margin: 0 0 10px;
   color: var(--sage);
-  font-size: 12px;
-  letter-spacing: 1px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 h1 {
-  margin: 0 0 26px;
-  font: normal clamp(40px, 9vw, 100px)/1.1 Georgia, "Times New Roman", serif;
-  letter-spacing: -0.055em;
+  margin: 0;
+  font: 400 clamp(2.75rem, 8.5vw, 6.25rem)/1.06 var(--serif);
+  letter-spacing: -0.045em;
 }
 
 .description {
   max-width: 44ch;
   margin: 0;
-  padding-left: 18px;
-  border-left: 2px solid var(--line);
+  padding-inline-start: clamp(14px, 2vw, 26px);
+  border-inline-start: 1px solid var(--accent);
   color: var(--sage);
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+}
+
+h1 span {
+  color: var(--accent);
+}
+
+.speaking-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1.618fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(24px, 4vw, 56px);
+  padding-block: clamp(32px, 6vw, 72px);
+  border-bottom: 1px solid var(--line);
+}
+
+/* Список сценариев и задание */
+.speaking-layout {
+  display: grid;
+  grid-template-columns: minmax(200px, 1fr) minmax(0, 2.8fr);
+  align-items: start;
+  gap: clamp(20px, 4vw, 44px);
+  margin-top: clamp(24px, 5vw, 48px);
+}
+
+.scenario-menu h2,
+.answer-panel h2 {
+  margin: 0 0 16px;
+  font: normal 27px/1.15 var(--serif);
+}
+
+#scenario-list, .practice-column, .review-items {
+  display: grid;
+  gap: 12px;
+}
+
+.speaking-layout button, .secondary {
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--night);
+  background: var(--mint);
+  font: inherit;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.speaking-layout button:disabled { opacity: 0.55; cursor: default; }
+.speaking-layout button:not(:disabled):hover { border-color: var(--accent); }
+
+#scenario-list button {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 14px 12px;
+  border-color: var(--line);
+  color: var(--mint);
+  background: var(--surface);
+  text-align: left;
+}
+
+#scenario-list button[aria-pressed="true"] { border-color: var(--accent); }
+#scenario-list button span { color: var(--accent); }
+#scenario-list button strong { font-weight: 600; }
+
+.scenario,
+.answer-panel {
+  min-width: 0;
+  padding: clamp(18px, 4vw, 36px);
+  border-radius: 4px;
+}
+
+.scenario {
+  border-top: 4px solid var(--accent);
+  color: var(--night);
+  background: var(--paper);
+}
+
+.scenario .eyebrow {
+  color: var(--line);
+}
+
+.scenario h2 {
+  margin: 0;
+  font: 400 clamp(1.875rem, 5vw, 3rem)/1.1 var(--serif);
+}
+
+.scenario h3 {
+  margin: 24px 0 8px;
+  font-size: 1rem;
+}
+
+#scenario-prompt {
+  max-width: 58ch;
+  font: 400 clamp(1.125rem, 3vw, 1.4375rem)/1.6 var(--serif);
+}
+
+#scenario-steps {
+  padding-inline-start: 22px;
+  line-height: 1.65;
+}
+
+.phrases {
+  margin: 16px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid #a6bea6;
+  color: var(--line);
+}
+
+/* Запись и разбор ответа */
+.answer-panel {
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.practice-timer,
+.record-actions,
+.record-result {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+#answer-time {
+  min-width: 5ch;
+  color: var(--accent);
+  font: normal 32px/1 var(--serif);
+  font-variant-numeric: tabular-nums;
+}
+
+.speaking-layout .secondary {
+  display: inline-block;
+  border-color: var(--line);
+  color: var(--mint);
+  background: transparent;
+}
+
+.speaking-layout a.secondary:hover {
+  border-color: var(--accent);
+}
+
+.notice {
+  max-width: 65ch;
+  margin: 10px 0;
+  color: var(--sage);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.notice:empty { margin: 0; }
+.record-actions { margin-top: 18px; }
+.record-result { margin-top: 14px; }
+.record-result audio { width: min(100%, 360px); }
+.review-items label { display: flex; align-items: baseline; gap: 10px; line-height: 1.45; cursor: pointer; }
+.review-items input { flex: none; margin: 0; accent-color: var(--sage); }
+.example { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--line); }
+.example summary { cursor: pointer; }
+.example p { font: normal 18px/1.65 var(--serif); }
+
+.mode-label {
+  display: block;
+  margin: 20px 0 8px;
+  font-weight: 600;
+}
+
+#practice-mode {
+  display: block;
+  width: min(100%, 28rem);
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  color: var(--mint);
+  background: var(--night);
+  font: inherit;
+  color-scheme: dark;
+}
+
+#answer-transcript {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid var(--sage);
+  border-radius: 4px;
+  color: var(--mint);
+  background: var(--night);
+  font: inherit;
+  line-height: 1.6;
+  resize: vertical;
+}
+
+#answer-transcript::placeholder { color: var(--sage); }
+
+/* Диалог и поле ответа */
+.dialogue-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.dialogue-heading h2 { margin-bottom: 0; }
+.dialogue-heading .eyebrow { font-size: 0.75rem; }
+#ai-connection:empty, #analysis-status:empty { display: none; }
+
+.chat-log {
+  max-height: 620px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  margin-block: 24px;
+  padding-inline-end: 8px;
+  scrollbar-color: var(--line) transparent;
+  scrollbar-width: thin;
+}
+
+.chat-welcome {
+  padding-block: 18px 26px;
+  border-block: 1px solid var(--line);
+}
+
+.chat-welcome p:first-child {
+  margin-top: 0;
+  color: var(--mint);
+  font: 400 1.625rem/1.3 var(--serif);
+}
+
+.chat-welcome p:last-child { max-width: 48ch; margin-bottom: 0; color: var(--sage); }
+
+.chat-message {
+  padding-block: 22px;
+  border-top: 1px solid var(--line);
+  overflow-wrap: anywhere;
+}
+
+.chat-message:last-child { padding-bottom: 8px; }
+.chat-message p { margin: 12px 0; white-space: pre-wrap; }
+.chat-message .chat-author { margin: 0 0 14px; color: var(--sage); font-size: 0.8125rem; }
+.chat-user { margin-left: clamp(16px, 5vw, 48px); }
+.chat-user .chat-answer { font: 400 1.4375rem/1.65 var(--serif); }
+.chat-teacher { padding-inline-end: clamp(0px, 2vw, 24px); }
+.chat-teacher p { line-height: 1.75; }
+.chat-correction span { color: var(--accent); }
+.chat-correction strong { font-weight: 600; }
+.chat-note { color: var(--sage); }
+.chat-next { padding-top: 10px; }
+
+.chat-message blockquote {
+  margin: 20px 0;
+  padding-left: 18px;
+  border-left: 2px solid var(--sage);
+  font: italic 1.375rem/1.65 var(--serif);
+}
+
+.speaking-layout .chat-answer button,
+.speaking-layout .chat-edit {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-decoration: underline dotted var(--sage);
+  text-underline-offset: 5px;
+}
+
+.speaking-layout .chat-answer button:hover { color: var(--accent); }
+.speaking-layout .chat-edit { color: var(--sage); font: 0.8125rem var(--sans); text-decoration-style: solid; }
+
+.chat-progress { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
+.chat-progress .notice { margin: 0; }
+.chat-progress #analysis-status { flex: 1 1 240px; }
+#analysis-elapsed { font-variant-numeric: tabular-nums; }
+.chat-composer { margin-top: 20px; }
+.chat-composer label { display: block; margin-bottom: 10px; font-size: 0.9375rem; }
+.send-hint { margin-left: auto; color: var(--sage); font-size: 0.8125rem; }
+.chat-privacy { margin: 18px 0 0; color: var(--sage); font-size: 0.8125rem; line-height: 1.6; }
+
+.practice-phrase {
+  margin: 18px 0 0;
+  color: var(--accent);
+  font: 400 1.5rem/1.35 var(--serif);
+}
+
+@media (max-width: 760px) {
+  .page { width: calc(100% - 32px); }
+  .masthead { min-height: 65px; }
+  .speaking-heading, .speaking-layout { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* Раскрытие обложки при открытии раздела. */
 .intro {
   position: fixed;
   inset: 0;
+  overflow: hidden;
   z-index: 50;
   display: grid;
   place-items: center;
@@ -117,7 +436,7 @@ h1 {
 
 .intro-word {
   z-index: 1;
-  font: italic clamp(54px, 9vw, 120px) Georgia, "Times New Roman", serif;
+  font: italic clamp(2.625rem, 8.4vw, 7.5rem)/1 var(--serif);
   animation: fade-title 350ms 100ms both;
 }
 

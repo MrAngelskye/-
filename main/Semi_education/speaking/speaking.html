@@ -3,8 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Speaking - English</title>
+  <title>Speaking — StackPhrase</title>
+  <link rel="icon" type="image/svg+xml" href="../../assets/stackphrase.svg">
   <link rel="stylesheet" href="speaking.css">
+  <script src="speaking-scenarios.js" defer></script>
+  <script src="speaking-feedback.js" defer></script>
+  <script src="speaking.js" defer></script>
 </head>
 <body>
   <div class="intro" aria-hidden="true">
@@ -13,13 +17,113 @@
 
   <div class="page">
     <header class="masthead">
-      <a class="brand" href="../../home.html" lang="en">English</a>
+      <a class="brand" href="../../home.html" lang="en">
+        <img src="../../assets/stackphrase.svg" alt="" width="32" height="32">
+        StackPhrase
+      </a>
+      <a class="back-link" href="../../home.html">← На главную</a>
     </header>
     <main class="content">
-      <a class="back-link" href="../../home.html">← На главную</a>
-      <p class="eyebrow">Разговорная практика</p>
-      <h1 lang="en">Speaking</h1>
-      <p class="description">Здесь будут темы и задания для разговорной практики.</p>
+      <div class="speaking-heading">
+        <div>
+          <p class="eyebrow">Самостоятельная практика / Разговор</p>
+          <h1 lang="en">Speaking<span>.</span></h1>
+        </div>
+        <p class="description">Потренируй английский для рабочих ситуаций в IT. Выбери задачу, скажи ответ вслух и проверь, понятно ли ты объяснил главное.</p>
+      </div>
+
+      <div class="speaking-layout" id="speaking-practice" hidden>
+        <aside class="scenario-menu" aria-label="Список сценариев">
+          <h2>Сценарии</h2>
+          <div id="scenario-list"></div>
+        </aside>
+
+        <div class="practice-column">
+          <section class="scenario" aria-labelledby="scenario-title">
+            <p id="scenario-meta" class="eyebrow"></p>
+            <h2 id="scenario-title" lang="en"></h2>
+            <p id="scenario-prompt" lang="en"></p>
+            <h3>План ответа</h3>
+            <ol id="scenario-steps"></ol>
+            <p id="scenario-phrases" class="phrases" lang="en"></p>
+          </section>
+
+          <section class="answer-panel" aria-labelledby="answer-title">
+            <h2 id="answer-title">Твой ответ</h2>
+            <div class="practice-timer">
+              <span id="answer-time" role="timer" aria-label="Осталось времени"></span>
+              <button id="timer-toggle" type="button">Запустить таймер</button>
+              <button id="timer-reset" class="secondary" type="button">Сбросить</button>
+            </div>
+            <p id="timer-message" class="notice" role="status"></p>
+            <label for="practice-mode" class="mode-label">Что тренируем</label>
+            <select id="practice-mode">
+              <option value="answer">Ответ на задание</option>
+              <option value="phrase">Произношение тренировочной фразы</option>
+            </select>
+            <div class="record-actions">
+              <button id="record-analyze" type="button" aria-describedby="ai-privacy" disabled>Записать и отправить</button>
+              <button id="record-start" class="secondary" type="button">Только запись</button>
+              <button id="record-stop" type="button" hidden>Остановить запись</button>
+            </div>
+            <p id="ai-privacy" class="notice">При выборе «Записать и отправить» запись отправится в диалог после остановки. Запись — до 60 секунд.</p>
+            <p id="record-message" class="notice" role="status">Можно сначала прослушать себя, а затем отправить запись в диалог.</p>
+            <div id="record-result" class="record-result" hidden>
+              <audio id="answer-audio" controls aria-label="Записанный ответ"></audio>
+              <a class="secondary" href="#feedback-title">К диалогу ↓</a>
+              <a id="record-download" class="secondary" download>Скачать запись ↓</a>
+              <button id="record-clear" class="secondary" type="button">Удалить запись</button>
+            </div>
+          </section>
+
+          <section id="analysis-panel" class="answer-panel dialogue-panel" aria-labelledby="feedback-title">
+            <div class="dialogue-heading">
+              <div>
+                <p class="eyebrow">Практика в диалоге</p>
+                <h2 id="feedback-title" tabindex="-1">Обсудим ответ</h2>
+              </div>
+              <button id="new-dialogue" class="secondary" type="button">Новый диалог</button>
+            </div>
+            <p id="ai-connection" class="notice" role="status"></p>
+            <div id="speaking-chat" class="chat-log" role="log" aria-label="Диалог по заданию" aria-live="polite" aria-relevant="additions"></div>
+            <div class="chat-progress">
+              <p id="analysis-status" class="notice" role="status"></p>
+              <span id="analysis-elapsed" class="notice" aria-hidden="true" hidden></span>
+              <button id="cancel-analysis" class="secondary" type="button" hidden>Отменить</button>
+            </div>
+            <div class="chat-composer">
+              <label for="answer-transcript">Твой ответ или вопрос</label>
+              <textarea id="answer-transcript" rows="3" maxlength="4000" placeholder="Напиши ответ или спроси о том, что осталось непонятным…"></textarea>
+              <div class="record-actions">
+                <button id="review-transcript" type="button" disabled>Отправить</button>
+                <button id="analyze-recording" class="secondary" type="button" aria-describedby="ai-privacy" disabled>Отправить запись</button>
+                <span class="send-hint">Ctrl + Enter</span>
+              </div>
+            </div>
+            <p class="chat-privacy">Ответы формирует Google Gemini. При отправке он получает сообщение, недавнюю переписку по заданию и запись, если ты выбрал её разбор. Диалог хранится в памяти этой вкладки до обновления страницы.</p>
+          </section>
+
+          <section class="answer-panel" aria-labelledby="drill-title">
+            <h2 id="drill-title">Фраза для повтора</h2>
+            <p id="practice-phrase" class="practice-phrase" lang="en"></p>
+            <p id="practice-tip" class="notice"></p>
+            <button id="listen-phrase" class="secondary" type="button">Послушать фразу</button>
+            <p id="listen-status" class="notice" role="status"></p>
+          </section>
+
+          <section class="answer-panel" aria-labelledby="review-title">
+            <h2 id="review-title">Самопроверка</h2>
+            <p class="notice">Отметь, что удалось объяснить в своём ответе.</p>
+            <div id="review-items" class="review-items"></div>
+            <p id="review-result" class="notice" role="status"></p>
+            <details class="example">
+              <summary>Посмотреть пример ответа</summary>
+              <p id="scenario-example" lang="en"></p>
+            </details>
+          </section>
+        </div>
+      </div>
+      <noscript><p>Включи JavaScript, чтобы открыть сценарии и тренажёр.</p></noscript>
     </main>
   </div>
 </body>

@@ -1,3 +1,5 @@
+@import url("./assets/fonts/fonts.css");
+
 :root {
     --night: #051f20;
     --background: #0b2b26;
@@ -5,7 +7,6 @@
     --line: #235347;
     --sage: #8eb69b;
     --mint: #daf1de;
-    --serif: Georgia, "Times New Roman", serif;
 }
 
 * {
@@ -21,7 +22,7 @@ body {
     margin: 0;
     color: var(--mint);
     background: var(--background);
-    font-family: "Roboto Condensed", "Segoe UI", Arial, sans-serif;
+    font-family: var(--condensed);
     font-weight: 600;
     font-size: 15px;
     line-height: 1.7;
@@ -58,8 +59,17 @@ input:focus-visible,
 }
 
 .brand {
-    font: bold 32px var(--serif);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font: bold clamp(22px, 4vw, 32px) var(--serif);
     letter-spacing: -1.5px;
+}
+
+.brand img {
+    width: 1em;
+    height: 1em;
+    flex: none;
 }
 
 .edition,
